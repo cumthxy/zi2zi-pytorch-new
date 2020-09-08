@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from .generators import UNetGenerator
 from .discriminators import Discriminator
-from .losses import CategoryLoss, BinaryLoss
+from .losses import CategoryLoss, BinaryLoss,VGGPerceptualLoss
 import os
 from torch.optim.lr_scheduler import StepLR
 from utils.init_net import init_net

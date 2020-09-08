@@ -14,25 +14,25 @@ class CategoryLoss(nn.Module):
         return self.loss(category_logits, target)
 
 
-# class BinaryLoss(nn.Module):
-#     def __init__(self, real):
-#         super(BinaryLoss, self).__init__()
-#         self.bce = nn.BCEWithLogitsLoss()
-#         self.real = real
-#
-#     def forward(self, logits):
-#         if self.real:
-#             labels = torch.ones(logits.shape[0], 1)
-#         else:
-#             labels = torch.zeros(logits.shape[0], 1)
-#         if logits.is_cuda:
-#             labels = labels.cuda()
-#         return self.bce(logits, labels)
-
 class BinaryLoss(nn.Module):
+    def __init__(self, real):
+        super(BinaryLoss, self).__init__()
+        self.bce = nn.BCEWithLogitsLoss()
+        self.real = real
+
+    def forward(self, logits):
+        if self.real:
+            labels = torch.ones(logits.shape[0], 1)
+        else:
+            labels = torch.zeros(logits.shape[0], 1)
+        if logits.is_cuda:
+            labels = labels.cuda()
+        return self.bce(logits, labels)
+
+class VGGPerceptualLoss(nn.Module):
 
     def __init__(self, resize=True):
-        super(BinaryLoss, self).__init__()
+        super(VGGPerceptualLoss, self).__init__()
         blocks = []
         blocks.append(torchvision.models.vgg16(pretrained=True).features[:4].eval())
         blocks.append(torchvision.models.vgg16(pretrained=True).features[4:9].eval())
