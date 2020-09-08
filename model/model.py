@@ -7,7 +7,7 @@ import os
 from torch.optim.lr_scheduler import StepLR
 from utils.init_net import init_net
 import torchvision.utils as vutils
-
+from model.vgg_loss import get_model_and_losses
 
 class Zi2ZiModel:
     def __init__(self, input_nc=3, embedding_num=40, embedding_dim=128,
@@ -99,7 +99,8 @@ class Zi2ZiModel:
 
         self.fake_B, self.encoded_real_A = self.netG(self.real_A, self.labels)
         self.encoded_fake_B = self.netG(self.fake_B).view(self.fake_B.shape[0], -1)
-
+        ## A 是source
+        ## B 是targert
     def backward_D(self, no_target_source=False):
 
         real_AB = torch.cat([self.real_A, self.real_B], 1)
@@ -132,8 +133,9 @@ class Zi2ZiModel:
         fake_category_loss = self.Lcategory_penalty * self.category_loss(fake_category_logits, self.labels)
 
         cheat_loss = self.real_binary_loss(fake_D_logits)
+        perceptual_loss = get_model_and_losses(self.fake_B,self.real_B)
 
-        self.g_loss = cheat_loss + l1_loss + fake_category_loss + const_loss
+        self.g_loss = cheat_loss + l1_loss + fake_category_loss + const_loss+perceptual_loss
         self.g_loss.backward()
         return const_loss, l1_loss, cheat_loss
 
