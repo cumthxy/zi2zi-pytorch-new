@@ -228,6 +228,7 @@ args = parser.parse_args()
 if __name__ == "__main__":
     if not os.path.isdir(args.sample_dir):
         os.mkdir(args.sample_dir)
+    print(args.mode)
     if args.mode == 'font2font':
         if args.src_font is None or args.dst_font is None:
             raise ValueError('src_font and dst_font are required.')
