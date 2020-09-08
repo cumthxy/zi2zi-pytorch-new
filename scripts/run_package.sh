@@ -1,5 +1,5 @@
 
 python package.py \
---dir samples \
+--dir image_dir \
 --save_dir experiment/data \
 --split_ratio 0
