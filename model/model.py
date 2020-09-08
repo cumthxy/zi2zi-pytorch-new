@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from .generators import UNetGenerator
 from .discriminators import Discriminator
-from .losses import CategoryLoss, BinaryLoss,VGGPerceptualLoss
+from .losses import CategoryLoss, BinaryLoss
 import os
 from torch.optim.lr_scheduler import StepLR
 from utils.init_net import init_net
@@ -67,7 +67,7 @@ class Zi2ZiModel:
         self.l1_loss = nn.L1Loss()
         self.mse = nn.MSELoss()
         self.sigmoid = nn.Sigmoid()
-        self.perceptual_loss=VGGPerceptualLoss()
+        self.perceptual_loss = VGGPerceptualLoss()
 
 
         if self.gpu_ids:
