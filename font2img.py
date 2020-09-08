@@ -89,7 +89,7 @@ def filter_recurring_hash(charset, font, canvas_size, x_offset, y_offset):
 def font2font(src, dst, charset, char_size, canvas_size,
              x_offset, y_offset, sample_count, sample_dir, label=0, filter_by_hash=True):
     src_font = ImageFont.truetype(src, size=char_size)
-    dst_font = ImageFont.truetype(dst, size=char_size)
+    dst_font = ImageFont.truetype(dst, size=240)
 
     filter_hashes = set()
     if filter_by_hash:
