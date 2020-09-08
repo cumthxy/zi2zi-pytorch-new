@@ -5,7 +5,7 @@ import copy
 l1_loss = nn.L1Loss()
 def get_model_and_losses(generate_img,target_img):
     layers_default = ['conv_2', 'conv_4', 'conv_6', 'conv_10', 'conv_14']
-    vgg = models.vgg19(pretrained=True).features.eval()
+    vgg = models.vgg19(pretrained=True)
     vgg.features[0] = nn.Conv2d(1, 256, kernel_size=3, padding=1)
     model = nn.Sequential()
     vgg = copy.deepcopy(vgg)
