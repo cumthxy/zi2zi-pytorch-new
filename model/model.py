@@ -2,12 +2,11 @@ import torch
 import torch.nn as nn
 from .generators import UNetGenerator
 from .discriminators import Discriminator
-from .losses import CategoryLoss, BinaryLoss
+from .losses import CategoryLoss, BinaryLoss,VGGPerceptualLoss
 import os
 from torch.optim.lr_scheduler import StepLR
 from utils.init_net import init_net
 import torchvision.utils as vutils
-from .vgg_loss import VGGPerceptualLoss
 
 class Zi2ZiModel:
     def __init__(self, input_nc=3, embedding_num=40, embedding_dim=128,
