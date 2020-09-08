@@ -22,9 +22,9 @@ def load_global_charset():
     global CN_CHARSET, JP_CHARSET, KR_CHARSET, CN_T_CHARSET
     cjk = json.load(open(DEFAULT_CHARSET))
     CN_CHARSET = cjk["gbk"]
-    JP_CHARSET = cjk["jp"]
-    KR_CHARSET = cjk["kr"]
-    CN_T_CHARSET = cjk["gb2312_t"]
+    # JP_CHARSET = cjk["jp"]
+    # KR_CHARSET = cjk["kr"]
+    # CN_T_CHARSET = cjk["gb2312_t"]
 
 
 def draw_single_char(ch, font, canvas_size, x_offset, y_offset):
