@@ -19,7 +19,7 @@ class DatasetFromObj(data.Dataset):
         self.image_provider = PickledImageProvider(obj_path)
         self.input_nc = input_nc
         if self.input_nc == 1:
-            self.transform = transforms.Normalize(0.5, 0.5)
+            self.transform = transforms.Normalize((0.5, ), (0.5, ))
         elif self.input_nc == 3:
             self.transform = transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         else:
