@@ -1,5 +1,5 @@
 
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=0
 
 python train.py \
 --experiment_dir experiment \
