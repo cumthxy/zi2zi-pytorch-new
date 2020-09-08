@@ -7,7 +7,7 @@ import os
 from torch.optim.lr_scheduler import StepLR
 from utils.init_net import init_net
 import torchvision.utils as vutils
-from model.vgg_loss import get_model_and_losses
+from model.vgg_loss import VGGPerceptualLoss
 
 class Zi2ZiModel:
     def __init__(self, input_nc=3, embedding_num=40, embedding_dim=128,
@@ -68,6 +68,8 @@ class Zi2ZiModel:
         self.l1_loss = nn.L1Loss()
         self.mse = nn.MSELoss()
         self.sigmoid = nn.Sigmoid()
+        self.perceptual_loss=VGGPerceptualLoss()
+
 
         if self.gpu_ids:
             self.category_loss.cuda()
@@ -76,6 +78,7 @@ class Zi2ZiModel:
             self.l1_loss.cuda()
             self.mse.cuda()
             self.sigmoid.cuda()
+            self.perceptual_loss.cuda()
 
         if self.is_training:
             self.netD.train()
@@ -133,9 +136,8 @@ class Zi2ZiModel:
         fake_category_loss = self.Lcategory_penalty * self.category_loss(fake_category_logits, self.labels)
 
         cheat_loss = self.real_binary_loss(fake_D_logits)
-        #erceptual_loss = get_model_and_losses(self.fake_B,self.real_B)
-
-        self.g_loss = cheat_loss + l1_loss + fake_category_loss + const_loss#+perceptual_loss
+        perceptual_loss = self.perceptual_loss(self.fake_B,self.real_B)
+        self.g_loss = cheat_loss + l1_loss + fake_category_loss + const_loss+perceptual_loss
         self.g_loss.backward()
         return const_loss, l1_loss, cheat_loss
 
