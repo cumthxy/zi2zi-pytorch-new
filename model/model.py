@@ -133,9 +133,9 @@ class Zi2ZiModel:
         fake_category_loss = self.Lcategory_penalty * self.category_loss(fake_category_logits, self.labels)
 
         cheat_loss = self.real_binary_loss(fake_D_logits)
-        perceptual_loss = get_model_and_losses(self.fake_B,self.real_B)
+        #erceptual_loss = get_model_and_losses(self.fake_B,self.real_B)
 
-        self.g_loss = cheat_loss + l1_loss + fake_category_loss + const_loss+perceptual_loss
+        self.g_loss = cheat_loss + l1_loss + fake_category_loss + const_loss#+perceptual_loss
         self.g_loss.backward()
         return const_loss, l1_loss, cheat_loss
 
