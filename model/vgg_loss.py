@@ -39,7 +39,3 @@ def get_model_and_losses(generate_img,target_img):
     return  perceptual_loss
 
 
-
-
-
-get_model_and_losses(vgg)
