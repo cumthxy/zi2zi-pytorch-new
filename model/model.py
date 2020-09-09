@@ -257,6 +257,7 @@ class Zi2ZiModel:
             #     vutils.save_image(image_tensor, os.path.join(label_dir, str(cnt) + '.png'))
             #     print("图片已经保存")
             #     cnt += 1
+            print("保存图片")
             img = vutils.make_grid(tensor_to_plot)
             vutils.save_image(tensor_to_plot, basename + "_construct.png")
             self.set_input(torch.randn(1, self.embedding_num).repeat(batch[0].shape[0], 1), batch[2], batch[1])
