@@ -138,7 +138,7 @@ class Zi2ZiModel:
         perceptual_loss = self.perceptual_loss(self.fake_B,self.real_B)
         self.g_loss = cheat_loss + l1_loss + fake_category_loss + const_loss+perceptual_loss
         self.g_loss.backward()
-        return const_loss, l1_loss, cheat_loss
+        return const_loss, l1_loss, cheat_loss,perceptual_loss
 
     def update_lr(self):
         # There should be only one param_group.
@@ -176,9 +176,9 @@ class Zi2ZiModel:
         # collect all the losses along the way
         self.forward()  # compute fake images: G(A)
         self.optimizer_G.zero_grad()  # set G's gradients to zero
-        const_loss, l1_loss, cheat_loss = self.backward_G()  # calculate gradients for G
+        const_loss, l1_loss, cheat_loss, perceptual_loss= self.backward_G()  # calculate gradients for G
         self.optimizer_G.step()  # udpate G's weights
-        return const_loss, l1_loss, category_loss, cheat_loss
+        return const_loss, l1_loss, category_loss, cheat_loss, perceptual_loss
 
     def set_requires_grad(self, nets, requires_grad=False):
         """Set requies_grad=Fasle for all the networks to avoid unnecessary computations
@@ -249,13 +249,20 @@ class Zi2ZiModel:
             self.set_input(batch[0], batch[2], batch[1])
             self.forward()
             tensor_to_plot = torch.cat([self.fake_B, self.real_B], 3)
-            for label, image_tensor in zip(batch[0], tensor_to_plot):
-                label_dir = os.path.join(basename, str(label))
-                chk_mkdir(label_dir)
-                vutils.save_image(image_tensor, os.path.join(label_dir, str(cnt) + '.png'))
-                cnt += 1
-            # img = vutils.make_grid(tensor_to_plot)
-            # vutils.save_image(tensor_to_plot, basename + "_construct.png")
+            # for label, image_tensor in zip(batch[0], tensor_to_plot):
+            #     label_dir = os.path.join(basename, str(label))
+            #     chk_mkdir(label_dir)
+            #     print("basename",basename)
+            #     print("label_dir",label_dir)
+            #     vutils.save_image(image_tensor, os.path.join(label_dir, str(cnt) + '.png'))
+            #     print("图片已经保存")
+            #     cnt += 1
+            img = vutils.make_grid(tensor_to_plot)
+            vutils.save_image(tensor_to_plot, basename + "_construct.png")
+            self.set_input(torch.randn(1, self.embedding_num).repeat(batch[0].shape[0], 1), batch[2], batch[1])
+            self.forward()
+            tensor_to_plot = torch.cat([self.fake_B, self.real_A], 3)
+            vutils.save_image(tensor_to_plot, basename + "_generate.png")
             '''
             We don't need generate_img currently.
             self.set_input(torch.randn(1, self.embedding_num).repeat(batch[0].shape[0], 1), batch[2], batch[1])
