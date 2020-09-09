@@ -1,6 +1,5 @@
 
 export CUDA_VISIBLE_DEVICES=0
-
 python train.py \
 --experiment_dir experiment \
 --gpu_ids cuda:0 \
