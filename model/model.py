@@ -249,21 +249,22 @@ class Zi2ZiModel:
             self.set_input(batch[0], batch[2], batch[1])
             self.forward()
             tensor_to_plot = torch.cat([self.fake_B, self.real_B], 3)
-            # for label, image_tensor in zip(batch[0], tensor_to_plot):
-            #     label_dir = os.path.join(basename, str(label))
-            #     chk_mkdir(label_dir)
-            #     print("basename",basename)
-            #     print("label_dir",label_dir)
-            #     vutils.save_image(image_tensor, os.path.join(label_dir, str(cnt) + '.png'))
-            #     print("图片已经保存")
-            #     cnt += 1
             print("保存图片")
-            img = vutils.make_grid(tensor_to_plot)
-            vutils.save_image(tensor_to_plot, basename + "_construct.png")
-            self.set_input(torch.randn(1, self.embedding_num).repeat(batch[0].shape[0], 1), batch[2], batch[1])
-            self.forward()
-            tensor_to_plot = torch.cat([self.fake_B, self.real_A], 3)
-            vutils.save_image(tensor_to_plot, basename + "_generate.png")
+            for label, image_tensor in zip(batch[0], tensor_to_plot):
+                label_dir = os.path.join(basename, str(label))
+                chk_mkdir(label_dir)
+                print("basename",basename)
+                print("label_dir",label_dir)
+                vutils.save_image(image_tensor, os.path.join(label_dir, str(cnt) + '.png'))
+                print("图片已经保存")
+                cnt += 1
+
+            # img = vutils.make_grid(tensor_to_plot)
+            # vutils.save_image(tensor_to_plot, basename + "_construct.png")
+            # self.set_input(torch.randn(1, self.embedding_num).repeat(batch[0].shape[0], 1), batch[2], batch[1])
+            # self.forward()
+            # tensor_to_plot = torch.cat([self.fake_B, self.real_A], 3)
+            # vutils.save_image(tensor_to_plot, basename + "_generate.png")
             '''
             We don't need generate_img currently.
             self.set_input(torch.randn(1, self.embedding_num).repeat(batch[0].shape[0], 1), batch[2], batch[1])
