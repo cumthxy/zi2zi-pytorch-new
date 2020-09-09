@@ -104,8 +104,9 @@ def main():
                 model.save_networks(global_steps)
                 print("Checkpoint: save checkpoint step %d" % global_steps)
             if global_steps % args.sample_steps == 0:
-                for vbid, val_batch in enumerate(val_dataloader):
-                    model.sample(val_batch, os.path.join(sample_dir, str(global_steps)))
+                # for vbid, val_batch in enumerate(val_dataloader): 测试集保存图片
+                print("保存图片")
+                model.sample(batch, os.path.join(sample_dir, str(global_steps)))
                 print("Sample: sample step %d" % global_steps)
             global_steps += 1
         if (epoch + 1) % args.schedule == 0:
